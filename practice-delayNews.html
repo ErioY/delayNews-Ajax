@@ -1,0 +1,48 @@
+<!--
+ * @Autor: ErioY
+ * @Date: 2019-10-02 14:17:02
+ * @Email: 1973545559@qq.com
+ * @Github: https://github.com/ErioY
+ * @LastEditors: ErioY
+ * @LastEditTime: 2019-10-02 14:47:48
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>延时新闻</title>
+</head>
+<body>
+    <ul></ul>
+    <script src = "ajax.js"></script>
+    <script>
+    // 每隔1秒重新读取数据的新闻页，实时更新新闻
+    var str = "";
+    var oUl = document.querySelector("ul");
+    function getDate() {
+        ajax("data.txt", {
+            "sucFn": function (data) {
+                if (str != data) { // 数据更新时
+                    str = data;
+                    createLi(); // 创建 li
+                }
+            },
+            "cache": false
+        });
+    }
+    // 创建 li
+    function createLi() {
+        oUl.innerHTML = "";
+        var arr = JSON.parse(str); // 将字符串转换成数组
+        for (var i = 0; i < arr.length; i++) {
+            var oLi = document.createElement("li");
+            oUl.appendChild(oLi);
+            oLi.innerHTML = arr[i];
+        }
+    }
+    setInterval(getDate, 1000);
+    </script>
+</body>
+</html>
